@@ -1,5 +1,6 @@
 package core;
 
+import chromosome.Chromosome;
 import crossover.CrossoverMethod;
 import mutation.MutationMethod;
 import replacement.ReplacementStrategy;
