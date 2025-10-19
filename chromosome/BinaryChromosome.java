@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class BinaryChromosome extends Chromosome {
-    private int[] genes;
+    private Object[] genes;
     private Random rand = new Random();
 
     public BinaryChromosome(int length) {
-        this.genes = new int[length];
+        this.genes = new Object[length];
     }
 
     @Override
@@ -19,11 +19,12 @@ public class BinaryChromosome extends Chromosome {
     }
 
     @Override
-    public void evaluateFitness() {
+    public double evaluateFitness() {
         // Example fitness: maximize number of 1s
         int sum = 0;
-        for (int g : genes) sum += g;
+        for (Object g : genes) sum += (Integer) g;
         fitness = sum;
+        return fitness;
     }
 
     @Override
@@ -34,7 +35,11 @@ public class BinaryChromosome extends Chromosome {
         return clone;
     }
 
-    public int[] getGenes() { return genes; }
+    @Override
+    public Object[] getGenes() { return genes; }
+
+    @Override
+    public void setGenes(Object[] genes) {this.genes = genes;}
 
     @Override
     public String toString() {

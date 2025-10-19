@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class IntegerChromosome extends Chromosome {
-    private int[] genes;
+    private Object[] genes;
     private int minValue;
     private int maxValue;
     private Random rand=new Random();
 
     public IntegerChromosome(int length, int minValue, int maxValue) {
-        this.genes = new int[length];
+        this.genes = new Object[length];
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
@@ -26,7 +26,7 @@ public class IntegerChromosome extends Chromosome {
     public double evaluateFitness() {
         // Example: sum of values (to maximize)
         int sum = 0;
-        for (int g : genes) sum += g;
+        for (Object g : genes) sum += (Integer) g;
         fitness = sum;
         return fitness;
     }
@@ -39,7 +39,11 @@ public class IntegerChromosome extends Chromosome {
         return clone;
     }
 
-    public int[] getGenes() { return genes; }
+    @Override
+    public Object[] getGenes() { return genes; }
+
+    @Override
+    public void setGenes(Object[] genes) {this.genes = genes;}
 
     @Override
     public String toString() {

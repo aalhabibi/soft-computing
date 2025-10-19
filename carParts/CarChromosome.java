@@ -9,10 +9,10 @@ public class CarChromosome extends IntegerChromosome {
 
     @Override
     public double evaluateFitness() {
-        CarPart engine = CarPartsDatabase.ENGINES.get(getGenes()[0]);
-        CarPart wheels = CarPartsDatabase.WHEELS.get(getGenes()[1]);
-        CarPart body = CarPartsDatabase.BODIES.get(getGenes()[2]);
-        CarPart transmission = CarPartsDatabase.TRANSMISSIONS.get(getGenes()[3]);
+        CarPart engine = CarPartsDatabase.ENGINES.get((Integer) getGenes()[0]);
+        CarPart wheels = CarPartsDatabase.WHEELS.get((Integer) getGenes()[1]);
+        CarPart body = CarPartsDatabase.BODIES.get((Integer) getGenes()[2]);
+        CarPart transmission = CarPartsDatabase.TRANSMISSIONS.get((Integer) getGenes()[3]);
 
         double perf = engine.getPerformance() + wheels.getPerformance() +
                 body.getPerformance() + transmission.getPerformance();
