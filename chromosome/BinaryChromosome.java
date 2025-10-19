@@ -19,11 +19,12 @@ public class BinaryChromosome extends Chromosome {
     }
 
     @Override
-    public void evaluateFitness() {
+    public double evaluateFitness() {
         // Example fitness: maximize number of 1s
         int sum = 0;
         for (int g : genes) sum += g;
         fitness = sum;
+        return fitness;
     }
 
     @Override
@@ -35,6 +36,8 @@ public class BinaryChromosome extends Chromosome {
     }
 
     public int[] getGenes() { return genes; }
+
+    public void setGenes(int[] genes) { this.genes = genes; }
 
     @Override
     public String toString() {

@@ -28,6 +28,7 @@ public class FloatingPointChromosome extends Chromosome {
         double sum = 0;
         for (double g : genes) sum += Math.pow(g, 2);
         fitness = -sum; // smaller magnitude = better fitness
+        return fitness;
     }
 
     @Override
