@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class FloatingPointChromosome extends Chromosome {
-    private double[] genes;
+    private Object[] genes;
     private double minValue;
     private double maxValue;
     private Random rand=new Random();
 
     public FloatingPointChromosome(int length, double minValue, double maxValue) {
-        this.genes = new double[length];
+        this.genes = new Object[length];
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
@@ -26,7 +26,7 @@ public class FloatingPointChromosome extends Chromosome {
     public double evaluateFitness() {
         // Example: minimize distance to target vector (e.g., all 0s)
         double sum = 0;
-        for (double g : genes) sum += Math.pow(g, 2);
+        for (Object g : genes) sum += Math.pow((Double) g, 2);
         fitness = -sum; // smaller magnitude = better fitness
         return fitness;
     }
@@ -39,7 +39,11 @@ public class FloatingPointChromosome extends Chromosome {
         return clone;
     }
 
-    public double[] getGenes() { return genes; }
+    @Override
+    public Object[] getGenes() { return genes; }
+
+    @Override
+    public void setGenes(Object[] genes) {this.genes = genes;}
 
     @Override
     public String toString() {

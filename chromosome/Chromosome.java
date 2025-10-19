@@ -6,6 +6,8 @@ public abstract class Chromosome implements Comparable<Chromosome> {
     public abstract Chromosome copy();
     public abstract void randomInitialize();
     public abstract double evaluateFitness();
+    public abstract Object[] getGenes();
+    public abstract void setGenes(Object[] genes);
     public double getFitness() { return fitness; }
     public void setFitness(double fitness) { this.fitness = fitness; }
 
