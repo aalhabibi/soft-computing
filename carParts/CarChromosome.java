@@ -29,7 +29,24 @@ public class CarChromosome extends IntegerChromosome {
             compatibility += 20;
 
         double base = perf * 0.7 + compatibility - cost * 0.01;
-        return base;
+
+        // Apply penalization for exceeding cost limit
+//        double MAX_COST = 10000;
+//        double PENALTY_FACTOR = 0.50;
+//        if (cost > MAX_COST) {
+//            double penalty = (cost - MAX_COST) * PENALTY_FACTOR;
+//            base -= penalty;
+//        }
+//        System.out.println("Chromosome: " + this + " | Total cost = " + cost);
+//
+        double MAX_COST = 10000;
+        if (cost > MAX_COST) {
+            System.out.println("⚠️ Cost exceeded: " + cost + " (penalty applied)");
+            return 0; // infeasible solution
+        }
+
+        return Math.max(base, 0); // ensure fitness doesn't go negative
     }
+
 
 }

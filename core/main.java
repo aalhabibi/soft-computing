@@ -1,5 +1,6 @@
 package core;
 import chromosome.IntegerChromosome;
+import carParts.CarChromosome;
 import core.GeneticAlgorithm;
 import core.Population;
 import crossover.SinglePoint;
@@ -14,9 +15,9 @@ public class main {
     public static void main(String[] args) {
 
         // --- Step 1: Create initial population ---
-        List<IntegerChromosome> chromosomes = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            IntegerChromosome c = new IntegerChromosome(5,0,2); // 5 parts in car
+        List<CarChromosome> chromosomes = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            CarChromosome c = new CarChromosome(4,0,2); // 5 parts in car
             c.randomInitialize();
             c.evaluateFitness();
             chromosomes.add(c);
