@@ -2,6 +2,6 @@ package crossover;
 
 import chromosome.Chromosome;
 
-public interface CrossoverMethod {
-    Chromosome crossover(Chromosome parent1, Chromosome parent2);
+public interface CrossoverMethod<T> {
+    Chromosome<T> crossover(Chromosome<T> parent1, Chromosome<T> parent2);
 }

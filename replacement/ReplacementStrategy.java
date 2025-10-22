@@ -2,6 +2,6 @@ package replacement;
 
 import core.Population;
 
-public interface ReplacementStrategy {
-    Population replace(Population oldPop, Population newPop);
+public interface ReplacementStrategy<T> {
+    Population<T> replace(Population<T> oldPop, Population<T> newPop);
 }
