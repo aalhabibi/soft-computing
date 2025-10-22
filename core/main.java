@@ -22,13 +22,13 @@ public class main {
             chromosomes.add(c);
         }
 
-        Population initialPopulation = new Population(new ArrayList<>(chromosomes));
+        Population<Integer> initialPopulation = new Population<Integer>(new ArrayList<>(chromosomes));
 
         // --- Step 2: Create GA components ---
-        RouletteWheel selection = new RouletteWheel();
-        SinglePoint crossover = new SinglePoint();
+        RouletteWheel<Integer> selection = new RouletteWheel<Integer>();
+        SinglePoint<Integer> crossover = new SinglePoint<Integer>();
         IntegerSwapMutation mutation = new IntegerSwapMutation();
-        Elitism replacement = new Elitism(2);
+        Elitism<Integer> replacement = new Elitism<Integer>(2);
 
         // --- Step 3: Configure GA ---
         GeneticAlgorithm ga = new GeneticAlgorithm(initialPopulation, selection, crossover, mutation, replacement);

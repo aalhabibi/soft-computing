@@ -2,9 +2,9 @@ package replacement;
 
 import core.Population;
 
-public class Generational implements ReplacementStrategy {
+public class Generational<T> implements ReplacementStrategy<T> {
     @Override
-    public Population replace(Population oldPop, Population newPop) {
+    public Population<T> replace(Population<T> oldPop, Population<T> newPop) {
         // Full replacement — new population completely replaces old one
         return newPop;
     }

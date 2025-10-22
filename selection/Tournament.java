@@ -5,7 +5,7 @@ import core.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Tournament implements SelectionMethod {
+public class Tournament<T> implements SelectionMethod<T> {
     private final Random random = new Random();
     private final int tournamentSize;
 
@@ -14,14 +14,14 @@ public class Tournament implements SelectionMethod {
     }
 
     @Override
-    public Chromosome select(Population population) {
-        List<Chromosome> participants = random
+    public Chromosome<T> select(Population population) {
+        List<Chromosome<T>> participants = random
                 .ints(tournamentSize, 0, population.getChromosomeList().size())
-                .mapToObj(i -> population.getChromosomeList().get(i))
+                .mapToObj(i -> (Chromosome<T>) population.getChromosomeList().get(i))
                 .toList();
 
         return participants.stream()
                 .max(Comparator.comparingDouble(Chromosome::getFitness))
-                .orElse(population.getChromosomeList().get(0));
+                .orElse((Chromosome<T>) population.getChromosomeList().get(0));
     }
 }

@@ -3,12 +3,12 @@ package chromosome;
 import java.util.Arrays;
 import java.util.Random;
 
-public class BinaryChromosome extends Chromosome {
-    private Object[] genes;
+public class BinaryChromosome extends Chromosome<Integer> {
+    private Integer[] genes;
     private Random rand = new Random();
 
     public BinaryChromosome(int length) {
-        this.genes = new Object[length];
+        this.genes = new Integer[length];
     }
 
     @Override
@@ -22,13 +22,13 @@ public class BinaryChromosome extends Chromosome {
     public double evaluateFitness() {
         // Example fitness: maximize number of 1s
         int sum = 0;
-        for (Object g : genes) sum += (Integer) g;
+        for (Integer g : genes) sum += (Integer) g;
         fitness = sum;
         return fitness;
     }
 
     @Override
-    public Chromosome copy() {
+    public Chromosome<Integer> copy() {
         BinaryChromosome clone = new BinaryChromosome(genes.length);
         clone.genes = Arrays.copyOf(this.genes, this.genes.length);
         clone.fitness = this.fitness;
@@ -36,12 +36,10 @@ public class BinaryChromosome extends Chromosome {
     }
 
     @Override
-    public Object[] getGenes() { return genes; }
+    public Integer[] getGenes() { return genes; }
 
     @Override
-    public void setGenes(Object[] genes) {this.genes = genes;}
-
-    public void setGenes(int[] genes) { this.genes = genes; }
+    public void setGenes(Integer[] genes) {this.genes = genes;}
 
     @Override
     public String toString() {

@@ -3,7 +3,7 @@ package crossover;
 import chromosome.Chromosome;
 import java.util.*;
 
-public class Uniform implements CrossoverMethod {
+public class Uniform<T> implements CrossoverMethod<T> {
     private final Random random = new Random();
     private final double swapProbability;
 
@@ -12,9 +12,9 @@ public class Uniform implements CrossoverMethod {
     }
 
     @Override
-    public Chromosome crossover(Chromosome parent1, Chromosome parent2) {
+    public Chromosome<T> crossover(Chromosome<T> parent1, Chromosome<T> parent2) {
         int length = parent1.getGenes().length;
-        Object[] childGenes = new Object[length];
+        T[] childGenes = Arrays.copyOf(parent1.getGenes(), length);
 
         for (int i = 0; i < length; i++) {
             if (random.nextDouble() < swapProbability)

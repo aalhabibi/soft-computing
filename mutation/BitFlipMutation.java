@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 //For binary chromosomes ONLY
-public class BitFlipMutation implements MutationMethod {
+public class BitFlipMutation implements MutationMethod<Integer> {
     private final double mutationRate;
     private final Random random = new Random();
 
@@ -16,9 +16,9 @@ public class BitFlipMutation implements MutationMethod {
     }
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public void mutate(Chromosome<Integer> chromosome) {
         BinaryChromosome binary = (BinaryChromosome) chromosome;
-        int[] genes = binary.getGenes();
+        Integer[] genes = binary.getGenes();
 
         for (int i = 0; i < genes.length; i++) {
             if (random.nextDouble() < mutationRate) {

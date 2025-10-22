@@ -5,13 +5,13 @@ import chromosome.IntegerChromosome;
 import java.util.Random;
 
 //For integer chromosomes ONLY
-public class IntegerRandomResetMutation implements MutationMethod {
+public class IntegerRandomResetMutation implements MutationMethod<Integer> {
     private final Random random = new Random();
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public void mutate(Chromosome<Integer> chromosome) {
         IntegerChromosome intChromosome = (IntegerChromosome) chromosome;
-        int[] genes = intChromosome.getGenes();
+        Integer[] genes = intChromosome.getGenes();
         int index = random.nextInt(genes.length);
         int newValue = intChromosome.randomValueForGene(index);
         genes[index] = newValue;

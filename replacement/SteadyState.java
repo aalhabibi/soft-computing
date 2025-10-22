@@ -4,7 +4,7 @@ import core.Population;
 import chromosome.Chromosome;
 import java.util.Arrays;
 
-public class SteadyState implements ReplacementStrategy {
+public class SteadyState<T> implements ReplacementStrategy<T> {
     private int k; // number of individuals to replace
 
     public SteadyState(int k) {
@@ -12,9 +12,9 @@ public class SteadyState implements ReplacementStrategy {
     }
 
     @Override
-    public Population replace(Population oldPop, Population newPop) {
-        Chromosome[] oldArray = oldPop.getChromosomeList().toArray(new Chromosome[0]);
-        Chromosome[] newArray = newPop.getChromosomeList().toArray(new Chromosome[0]);
+    public Population<T> replace(Population<T> oldPop, Population<T> newPop) {
+        Chromosome<T>[] oldArray = oldPop.getChromosomeList().toArray(new Chromosome[0]);
+        Chromosome<T>[] newArray = newPop.getChromosomeList().toArray(new Chromosome[0]);
 
         // Sort both arrays by fitness descending
         Arrays.sort(oldArray);
@@ -25,6 +25,6 @@ public class SteadyState implements ReplacementStrategy {
             oldArray[oldArray.length - 1 - i] = newArray[i];
         }
 
-        return new Population(Arrays.asList(oldArray));
+        return new Population<T>(Arrays.asList(oldArray));
     }
 }

@@ -5,11 +5,11 @@ import chromosome.IntegerChromosome;
 import java.util.Random;
 
 //For integer chromosomes ONLY
-public class IntegerSwapMutation implements MutationMethod {
+public class IntegerSwapMutation implements MutationMethod<Integer> {
     private final Random random = new Random();
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public void mutate(Chromosome<Integer> chromosome) {
         IntegerChromosome intChromosome = (IntegerChromosome) chromosome;
         Object[] genes = intChromosome.getGenes();
 
@@ -20,6 +20,6 @@ public class IntegerSwapMutation implements MutationMethod {
         genes[i] = genes[j];
         genes[j] = temp;
 
-        intChromosome.setGenes(genes);
+        intChromosome.setGenes((Integer[]) genes);
     }
 }

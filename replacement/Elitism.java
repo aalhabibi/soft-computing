@@ -4,7 +4,7 @@ import core.Population;
 import chromosome.Chromosome;
 import java.util.Arrays;
 
-public class Elitism implements ReplacementStrategy {
+public class Elitism<T> implements ReplacementStrategy<T> {
     private int eliteCount;
 
     public Elitism(int eliteCount) {
@@ -12,9 +12,9 @@ public class Elitism implements ReplacementStrategy {
     }
 
     @Override
-    public Population replace(Population oldPop, Population newPop) {
-        Chromosome[] oldArray = oldPop.getChromosomeList().toArray(new Chromosome[0]);
-        Chromosome[] newArray = newPop.getChromosomeList().toArray(new Chromosome[0]);
+    public Population<T> replace(Population<T> oldPop, Population<T> newPop) {
+        Chromosome<T>[] oldArray = oldPop.getChromosomeList().toArray(new Chromosome[0]);
+        Chromosome<T>[] newArray = newPop.getChromosomeList().toArray(new Chromosome[0]);
 
         //sort populations by fitness
         Arrays.sort(oldArray);
