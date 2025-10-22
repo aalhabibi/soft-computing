@@ -11,12 +11,12 @@ public class IntegerSwapMutation implements MutationMethod {
     @Override
     public void mutate(Chromosome chromosome) {
         IntegerChromosome intChromosome = (IntegerChromosome) chromosome;
-        int[] genes = intChromosome.getGenes();
+        Object[] genes = intChromosome.getGenes();
 
         int i = random.nextInt(genes.length);
         int j = random.nextInt(genes.length);
 
-        int temp = genes[i];
+        int temp = (int) genes[i];
         genes[i] = genes[j];
         genes[j] = temp;
 

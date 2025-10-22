@@ -25,6 +25,7 @@ public class CarPartsDatabase {
 
     public static List<CarPart> TRANSMISSIONS = List.of(
             new CarPart("Manual Transmission", 2000, 50),
-            new CarPart("Automatic Transmission", 3000, 70)
+            new CarPart("Automatic Transmission", 3000, 70),
+            new CarPart("Hybrid", 2500, 60)
     );
 }
