@@ -1,7 +1,7 @@
 package chromosome;
 
 public abstract class Chromosome<T> implements Comparable<Chromosome<T>> {
-    protected double fitness;
+    public double fitness;
 
     public abstract Chromosome<T> copy();
     public abstract void randomInitialize();
@@ -13,6 +13,6 @@ public abstract class Chromosome<T> implements Comparable<Chromosome<T>> {
 
     @Override
     public int compareTo(Chromosome<T> other) {
-        return Double.compare(other.fitness, this.fitness);
+        return Double.compare(this.fitness, other.fitness);
     }
 }

@@ -9,32 +9,21 @@ import selection.SelectionMethod;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Set default values for the population size, number of generations, number of
- * parents, selection and crossover methods, crossover and mutation probabilities,
- * etc. However, the GA in your library must allow the user to set/choose these
- * values himself if he wishes to tweak these hyperparameters.
- */
-public class GeneticAlgorithm {
+public class GeneticAlgorithm<T> {
 
-    // === GA Components ===
     private SelectionMethod selection;
     private CrossoverMethod crossover;
     private MutationMethod mutation;
     private ReplacementStrategy replacement;
     private Population population;
 
-    // === Hyperparameters (with default values) ===
     private int populationSize = 50;
     private int generations = 100;
     private double crossoverRate = 0.8;
     private double mutationRate = 0.05;
     private int numParents = 2;
 
-    // === Constructors ===
-    public GeneticAlgorithm() {
-        //empty default constructor — user can set everything manually
-    }
+    public GeneticAlgorithm() {}
 
     public GeneticAlgorithm(Population initialPopulation,
                             SelectionMethod selection,
@@ -48,7 +37,6 @@ public class GeneticAlgorithm {
         this.replacement = replacement;
     }
 
-    // === Setters for customization ===
     public void setPopulation(Population population) { this.population = population; }
     public void setPopulationSize(int populationSize) { this.populationSize = populationSize; }
     public void setGenerations(int generations) { this.generations = generations; }
@@ -61,52 +49,84 @@ public class GeneticAlgorithm {
     public void setMutationMethod(MutationMethod mutation) { this.mutation = mutation; }
     public void setReplacementStrategy(ReplacementStrategy replacement) { this.replacement = replacement; }
 
-    // === Getters (optional, useful for debugging) ===
-    public int getPopulationSize() { return populationSize; }
-    public int getGenerations() { return generations; }
-    public double getCrossoverRate() { return crossoverRate; }
-    public double getMutationRate() { return mutationRate; }
-
-    /**
-     * Runs the Genetic Algorithm using the configured parameters and operators.
-     */
     public void run() {
         if (population == null || selection == null || crossover == null
                 || mutation == null || replacement == null) {
             throw new IllegalStateException("GA components not fully initialized!");
         }
 
+        System.out.println("\n=== Starting Genetic Algorithm ===");
+        System.out.println("Population size: " + populationSize);
+        System.out.println("Generations: " + generations);
+        System.out.println("Crossover rate: " + crossoverRate);
+        System.out.println("Mutation rate: " + mutationRate);
+        System.out.println("------------------------------------");
+
         for (int gen = 0; gen < generations; gen++) {
-            List<Chromosome> newGeneration = new ArrayList<>();
+            System.out.println("\n>>> Generation " + gen + " <<<");
+
+            for (Object obj : population.getChromosomeList()) {
+                Chromosome<T> c = (Chromosome<T>) obj;
+
+                c.evaluateFitness();
+            }
+
+
+            List<Chromosome<T>> newGeneration = new ArrayList<>();
 
             while (newGeneration.size() < population.getChromosomeList().size()) {
-                Chromosome parent1 = selection.select(population);
-                Chromosome parent2 = selection.select(population);
+                Chromosome<T> parent1 = selection.select(population);
+                Chromosome<T> parent2 = selection.select(population);
 
-                Chromosome child;
+                System.out.println("\nSelected Parents:");
+                System.out.println("Parent 1: " + parent1);
+                System.out.println("Parent 2: " + parent2);
 
-                // Apply crossover with probability
-                if (Math.random() < crossoverRate)
+                Chromosome<T> child;
+
+                if (Math.random() < crossoverRate) {
+                    System.out.println("Performing crossover...");
                     child = crossover.crossover(parent1, parent2);
-                else
-                    child = parent1.copy(); // no crossover
-
-                // Apply mutation with probability
-                if (Math.random() < mutationRate)
-                    mutation.mutate(child);
-
+                } else {
+                    System.out.println("Skipping crossover (copying parent1)...");
+                    child = parent1.copy();
+                }
                 child.evaluateFitness();
+                System.out.println("Child after crossover : " + child);
+
+                if (Math.random() < mutationRate) {
+                    System.out.println("Applying mutation...");
+                    mutation.mutate(child);
+                } else {
+                    System.out.println("Skipping mutation...");
+                }
+                child.evaluateFitness();
+                System.out.println("Child after mutation: " + child);
+
+
+                System.out.println("Child fitness: " + child.evaluateFitness());
+
                 newGeneration.add(child);
             }
 
             Population newPop = new Population(newGeneration);
+            System.out.println("\nReplacing old population...");
+
             population = replacement.replace(population, newPop);
 
-            // Optional: print best fitness every generation
-            System.out.println("Generation " + gen + " best: " + population.getBest());
+
+            for (Object obj : population.getChromosomeList()) {
+                Chromosome<T> c = (Chromosome<T>) obj;
+                c.evaluateFitness();
+            }
+            System.out.println("\nNew population: " + population.getChromosomeList());
+
+
+            Chromosome<T> best = population.getBest();
+            System.out.println("Best individual this generation: " + best);
         }
 
-        System.out.println("=== Final Best Individual ===");
+        System.out.println("\n=== Final Best Individual ===");
         System.out.println(population.getBest());
     }
 }

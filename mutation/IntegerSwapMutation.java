@@ -4,22 +4,26 @@ import chromosome.Chromosome;
 import chromosome.IntegerChromosome;
 import java.util.Random;
 
-//For integer chromosomes ONLY
+// For integer chromosomes ONLY
 public class IntegerSwapMutation implements MutationMethod<Integer> {
     private final Random random = new Random();
 
     @Override
     public void mutate(Chromosome<Integer> chromosome) {
         IntegerChromosome intChromosome = (IntegerChromosome) chromosome;
-        Object[] genes = intChromosome.getGenes();
+        Integer[] genes = intChromosome.getGenes(); // Use Integer[] directly
 
-        int i = random.nextInt(genes.length);
-        int j = random.nextInt(genes.length);
+        int length = genes.length;
+        int i = random.nextInt(length);
+        int j;
+        do {
+            j = random.nextInt(length);
+        } while (j == i); // ensure i != j to actually swap different genes
 
-        int temp = (int) genes[i];
+        int temp = genes[i];
         genes[i] = genes[j];
         genes[j] = temp;
 
-        intChromosome.setGenes((Integer[]) genes);
+        intChromosome.setGenes(genes);
     }
 }

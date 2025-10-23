@@ -9,6 +9,7 @@ public class CarChromosome extends IntegerChromosome {
 
     @Override
     public double evaluateFitness() {
+
         CarPart engine = CarPartsDatabase.ENGINES.get((Integer) getGenes()[0]);
         CarPart wheels = CarPartsDatabase.WHEELS.get((Integer) getGenes()[1]);
         CarPart body = CarPartsDatabase.BODIES.get((Integer) getGenes()[2]);
@@ -30,6 +31,8 @@ public class CarChromosome extends IntegerChromosome {
 
         double base = perf * 0.7 + compatibility - cost * 0.01;
 
+//        System.out.println("Base: " + Math.max(base, 0));
+
         // Apply penalization for exceeding cost limit
 //        double MAX_COST = 10000;
 //        double PENALTY_FACTOR = 0.50;
@@ -39,13 +42,16 @@ public class CarChromosome extends IntegerChromosome {
 //        }
 //        System.out.println("Chromosome: " + this + " | Total cost = " + cost);
 //
-        double MAX_COST = 10000;
+        double MAX_COST = 15000;
         if (cost > MAX_COST) {
-            System.out.println("⚠️ Cost exceeded: " + cost + " (penalty applied)");
+            System.out.println("⚠️ Cost exceeded: " + cost + " (penalty applied) for chromosome "+this);
+            this.fitness=0;
             return 0; // infeasible solution
         }
+        this.fitness = Math.max(base, 0);
+        return this.fitness;
 
-        return Math.max(base, 0); // ensure fitness doesn't go negative
+
     }
 
 

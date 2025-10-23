@@ -17,13 +17,16 @@ public class main {
         // --- Step 1: Create initial population ---
         List<CarChromosome> chromosomes = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            CarChromosome c = new CarChromosome(4,0,2); // 5 parts in car
+            CarChromosome c = new CarChromosome(4,0,2);
             c.randomInitialize();
             c.evaluateFitness();
             chromosomes.add(c);
         }
 
         Population<Integer> initialPopulation = new Population<Integer>(new ArrayList<>(chromosomes));
+        System.out.println("Initial population created with " + initialPopulation.getChromosomeList().size() + " chromosomes:");
+        System.out.println(initialPopulation.getChromosomeList());
+
 
         // --- Step 2: Create GA components ---
         RouletteWheel<Integer> selection = new RouletteWheel<Integer>();
@@ -32,8 +35,8 @@ public class main {
         Elitism<Integer> replacement = new Elitism<Integer>(2);
 
         // --- Step 3: Configure GA ---
-        GeneticAlgorithm ga = new GeneticAlgorithm(initialPopulation, selection, crossover, mutation, replacement);
-        ga.setGenerations(50);
+        GeneticAlgorithm<CarChromosome> ga = new GeneticAlgorithm(initialPopulation, selection, crossover, mutation, replacement);
+        ga.setGenerations(5);
         ga.setCrossoverRate(0.8);
         ga.setMutationRate(0.1);
 

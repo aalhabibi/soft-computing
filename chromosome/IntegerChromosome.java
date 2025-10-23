@@ -33,10 +33,16 @@ public class IntegerChromosome extends Chromosome<Integer> {
 
     @Override
     public Chromosome<Integer> copy() {
-        IntegerChromosome clone = new IntegerChromosome(genes.length, minValue, maxValue);
-        clone.genes = Arrays.copyOf(this.genes, this.genes.length);
-        clone.fitness = this.fitness;
-        return clone;
+        try {
+            IntegerChromosome clone = this.getClass()
+                    .getDeclaredConstructor(int.class, int.class, int.class)
+                    .newInstance(getGenes().length, minValue, maxValue);
+            clone.setGenes(Arrays.copyOf(this.getGenes(), this.getGenes().length));
+            clone.setFitness(this.getFitness());
+            return clone;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to copy chromosome", e);
+        }
     }
 
     @Override
