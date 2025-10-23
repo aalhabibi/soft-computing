@@ -3,7 +3,7 @@ package chromosome;
 import java.util.Arrays;
 import java.util.Random;
 
-public class IntegerChromosome extends Chromosome<Integer> {
+public abstract class IntegerChromosome extends Chromosome<Integer> {
     private Integer[] genes;
     private int minValue;
     private int maxValue;

@@ -3,7 +3,7 @@ package chromosome;
 import java.util.Arrays;
 import java.util.Random;
 
-public class BinaryChromosome extends Chromosome<Integer> {
+public abstract class BinaryChromosome extends Chromosome<Integer> {
     private Integer[] genes;
     private Random rand = new Random();
 
@@ -29,10 +29,16 @@ public class BinaryChromosome extends Chromosome<Integer> {
 
     @Override
     public Chromosome<Integer> copy() {
-        BinaryChromosome clone = new BinaryChromosome(genes.length);
-        clone.genes = Arrays.copyOf(this.genes, this.genes.length);
-        clone.fitness = this.fitness;
-        return clone;
+        try {
+            BinaryChromosome clone = this.getClass()
+                    .getDeclaredConstructor(int.class, int.class, int.class)
+                    .newInstance(getGenes().length, 0, 1);
+            clone.setGenes(Arrays.copyOf(this.getGenes(), this.getGenes().length));
+            clone.setFitness(this.getFitness());
+            return clone;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to copy chromosome", e);
+        }
     }
 
     @Override

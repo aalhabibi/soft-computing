@@ -6,6 +6,7 @@ public abstract class Chromosome<T> implements Comparable<Chromosome<T>> {
     public abstract Chromosome<T> copy();
     public abstract void randomInitialize();
     public abstract double evaluateFitness();
+    public abstract boolean isFeasible();
     public abstract T[] getGenes();
     public abstract void setGenes(T[] genes);
     public double getFitness() { return fitness; }

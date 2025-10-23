@@ -3,7 +3,7 @@ package chromosome;
 import java.util.Arrays;
 import java.util.Random;
 
-public class FloatingPointChromosome extends Chromosome<Double> {
+public abstract class FloatingPointChromosome extends Chromosome<Double> {
     private Double[] genes;
     private double minValue;
     private double maxValue;
@@ -24,19 +24,25 @@ public class FloatingPointChromosome extends Chromosome<Double> {
 
     @Override
     public double evaluateFitness() {
-        // Example: minimize distance to target vector (e.g., all 0s)
+
         double sum = 0;
         for (Double g : genes) sum += Math.pow((Double) g, 2);
-        fitness = -sum; // smaller magnitude = better fitness
+        fitness = sum;
         return fitness;
     }
 
     @Override
     public Chromosome<Double> copy() {
-        FloatingPointChromosome clone = new FloatingPointChromosome(genes.length, minValue, maxValue);
-        clone.genes = Arrays.copyOf(this.genes, this.genes.length);
-        clone.fitness = this.fitness;
-        return clone;
+        try {
+            FloatingPointChromosome clone = this.getClass()
+                    .getDeclaredConstructor(int.class, int.class, int.class)
+                    .newInstance(getGenes().length, minValue, maxValue);
+            clone.setGenes(Arrays.copyOf(this.getGenes(), this.getGenes().length));
+            clone.setFitness(this.getFitness());
+            return clone;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to copy chromosome", e);
+        }
     }
 
     @Override
