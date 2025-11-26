@@ -14,10 +14,9 @@ import fuzzylogic.operators.OrMax;
 import fuzzylogic.operators.aggregation.MaxAggregation;
 import fuzzylogic.operators.implication.MinImplication;
 import fuzzylogic.rules.FuzzyRule;
+import fuzzylogic.rules.RuleBase;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MusicRecommendationSystem {
 
@@ -337,6 +336,13 @@ public class MusicRecommendationSystem {
 
         while (true) {
             try {
+                System.out.println("\nType 'rules' to manage the rule base, or press Enter to continue.");
+                String cmd = scanner.nextLine().trim();
+                if (cmd.equalsIgnoreCase("rules")) {
+                    runRuleEditor(scanner);
+                    continue;
+                }
+
                 System.out.print("Enter Heart Rate (50-120 bpm) [or 'q' to quit]: ");
                 String input = scanner.nextLine().trim();
                 if (input.equalsIgnoreCase("q")) {
@@ -394,6 +400,133 @@ public class MusicRecommendationSystem {
         }
     }
 
+    private void runRuleEditor(Scanner scanner) {
+        while (true) {
+            System.out.println("\n=== RULE BASE EDITOR ===");
+            System.out.println("1. List rules");
+            System.out.println("2. Add rule");
+            System.out.println("3. Edit rule");
+            System.out.println("4. Enable/Disable rule");
+            System.out.println("5. Set rule weight");
+            System.out.println("6. Delete rule");
+            System.out.println("q. Back");
+            System.out.print("Choose: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1": { // list
+                    System.out.println("\nCurrent Rules:");
+                    for (FuzzyRule r : getRuleBase().getAllRules()) {
+                        System.out.println(" - " + r.getName()
+                                + " | enabled=" + r.isEnabled()
+                                + " | weight=" + r.getWeight()
+                                + " | consequent=" + (r.getConsequent()!=null? r.getConsequent().getFuzzySet() : "none"));
+                    }
+                    break;
+                }
+
+                case "2": { // add rule
+                    System.out.print("Rule name: ");
+                    String name = scanner.nextLine().trim();
+                    FuzzyRule rule = new FuzzyRule(name);
+
+                    System.out.println("Add antecedents (variable fuzzySet AND/OR NOT). Type 'done' when finished.");
+                    while (true) {
+                        System.out.print("Antecedent: ");
+                        String ant = scanner.nextLine().trim();
+                        if (ant.equalsIgnoreCase("done")) break;
+
+                        String[] p = ant.split("\\s+");
+                        String var = p[0];
+                        String fs = p[1];
+
+                        boolean isAnd = p.length > 2 && p[2].equalsIgnoreCase("AND");
+                        boolean isNot = ant.toLowerCase().contains("not");
+
+                        rule.addAntecedent(var, fs, isAnd, isNot);
+                    }
+
+                    System.out.print("Consequent (variable fuzzySet): ");
+                    String[] cons = scanner.nextLine().trim().split("\\s+");
+                    rule.setConsequent(cons[0], cons[1]);
+
+                    getRuleBase().addRule(rule);
+                    System.out.println("✓ Rule added.");
+                    break;
+                }
+
+                case "3": { // edit rule
+                    System.out.print("Rule name: ");
+                    String name = scanner.nextLine().trim();
+                    FuzzyRule rule = getRuleBase().getRule(name);
+                    if (rule == null) {
+                        System.out.println("Not found.");
+                        break;
+                    }
+
+                    System.out.println("Enter new antecedents (or 'skip'):");
+                    String antLine = scanner.nextLine().trim();
+                    if (!antLine.equalsIgnoreCase("skip")) {
+                        List<FuzzyRule.Antecedent> ants = new ArrayList<>();
+                        while (!antLine.equalsIgnoreCase("done")) {
+                            String[] p = antLine.split("\\s+");
+                            ants.add(new FuzzyRule.Antecedent(
+                                    p[0], p[1],
+                                    p.length > 2 && p[2].equalsIgnoreCase("AND"),
+                                    antLine.toLowerCase().contains("not")
+                            ));
+                            antLine = scanner.nextLine().trim();
+                        }
+                        rule.setAntecedents(ants);
+                    }
+
+                    System.out.println("Enter new consequent (or 'skip'):");
+                    String cLine = scanner.nextLine().trim();
+                    if (!cLine.equalsIgnoreCase("skip")) {
+                        String[] p = cLine.split("\\s+");
+                        rule.setConsequent(new FuzzyRule.Consequent(p[0], p[1]));
+                    }
+
+                    System.out.println("✓ Rule updated.");
+                    break;
+                }
+
+                case "4": { // enable/disable
+                    System.out.print("Rule name: ");
+                    String name = scanner.nextLine().trim();
+                    System.out.print("Enable? (true/false): ");
+                    boolean e = Boolean.parseBoolean(scanner.nextLine().trim());
+                    getRuleBase().enableRule(name, e);
+                    System.out.println("✓ Updated.");
+                    break;
+                }
+
+                case "5": { // weight
+                    System.out.print("Rule name: ");
+                    String name = scanner.nextLine().trim();
+                    System.out.print("Weight (0–1): ");
+                    double w = Double.parseDouble(scanner.nextLine().trim());
+                    getRuleBase().setRuleWeight(name, w);
+                    System.out.println("✓ Weight set.");
+                    break;
+                }
+
+                case "6": { // delete
+                    System.out.print("Rule name: ");
+                    getRuleBase().removeRule(scanner.nextLine().trim());
+                    System.out.println("✓ Deleted.");
+                    break;
+                }
+
+                case "q":
+                    return;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+
     // helpers
     private String createBar(double value) {
         int barLength = (int) (value * 20);
@@ -439,5 +572,10 @@ public class MusicRecommendationSystem {
         } else {
             return "🎵 Recommendation: EDM, Fast Pop, High-Energy Dance";
         }
+    }
+
+    private RuleBase getRuleBase() {
+        if (currentSystem == null) return null;
+        return currentSystem.getRuleBase();
     }
 }

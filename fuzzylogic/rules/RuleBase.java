@@ -42,4 +42,13 @@ public class RuleBase {
             rule.setWeight(weight);
         }
     }
+
+    // Replace antecedents and consequent
+    public void editRule(String ruleName, List<FuzzyRule.Antecedent> newAntecedents, FuzzyRule.Consequent newConsequent) {
+        FuzzyRule rule = getRule(ruleName);
+        if (rule != null) {
+            rule.setAntecedents(newAntecedents);
+            rule.setConsequent(newConsequent);
+        }
+    }
 }

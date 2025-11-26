@@ -57,15 +57,21 @@ public class FuzzyRule {
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public double getWeight() { return weight; }
     public void setWeight(double weight) { this.weight = Math.max(0, Math.min(1, weight)); }
+    public void setConsequent(Consequent consequent) { this.consequent = consequent; }
+
+    public void setAntecedents(List<Antecedent> newAntecedents) {
+        this.antecedents.clear();
+        this.antecedents.addAll(newAntecedents);
+    }
 
     // Nested classes
-    private static class Antecedent {
+    public static class Antecedent {
         String variable;
         String fuzzySet;
         boolean isAnd;
         boolean isNot;
 
-        Antecedent(String variable, String fuzzySet, boolean isAnd, boolean isNot) {
+        public Antecedent(String variable, String fuzzySet, boolean isAnd, boolean isNot) {
             this.variable = variable;
             this.fuzzySet = fuzzySet;
             this.isAnd = isAnd;
